@@ -1,0 +1,46 @@
+<div class="container mt-4">
+    <div *ngIf="usuario; else loading" class="profile-card">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+          <!-- Avatar Section -->
+          <div class="avatar-container mb-4">
+            <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar" />
+          </div>
+  
+          <!-- User Info Section -->
+          <h2 class="username">{{ usuario.nomeUsuario }}</h2>
+          <p class="user-email">{{ usuario.emailUsuario }}</p>
+  
+          <!-- Profile Stats (Optional) -->
+          <div class="row justify-content-center mt-3 profile-stats">
+            <div class="col-4">
+              <p class="stat-count">120</p>
+              <p class="stat-label">Postagens</p>
+            </div>
+            <div class="col-4">
+              <p class="stat-count">230</p>
+              <p class="stat-label">Amigos</p>
+            </div>
+            <div class="col-4">
+              <p class="stat-count">320</p>
+              <p class="stat-label">Comentários</p>
+            </div>
+          </div>
+  
+          <!-- Buttons Section -->
+          <div class="mt-4">
+            <button class="btn btn-crosstalk">Editar Perfil</button>
+            <button class="btn btn-crosstalk-secondary ml-2">Configurações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading State -->
+    <ng-template #loading>
+      <div class="text-center">
+        <p>Carregando dados do usuário...</p>
+      </div>
+    </ng-template>
+  </div>
+  

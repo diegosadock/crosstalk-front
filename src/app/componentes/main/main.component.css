@@ -1,8 +1,106 @@
+/* Global Styles */
 body {
-    background-color: #121212;
-  }
-  
-  .text-pink {
-    color: #ff66cc;
-  }
-  
+  background-color: #121212; /* Fundo escuro estilo Crosstalk */
+  color: #f5f5f5; /* Texto claro */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid #ff00ff;
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+/* Username */
+.username {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #ff00ff;
+}
+
+/* Email */
+.user-email {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+/* Bio */
+.user-bio {
+  font-size: 1.1rem;
+  color: #bbb;
+  margin-top: 10px;
+}
+
+/* Profile Stats */
+.profile-stats {
+  font-size: 1.1rem;
+  color: #ccc;
+}
+
+.stat-label {
+  color: #bbb;
+}
+
+.stat-info {
+  color: #00bfff;
+  font-weight: bold;
+}
+
+/* Status */
+.user-status {
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.active-status {
+  color: #32cd32; /* Verde para status ativo */
+}
+
+.inactive-status {
+  color: #ff6347; /* Vermelho para status inativo */
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  margin-left: 15px;
+}
+
+.btn-crosstalk {
+  background-color: #ff00ff;
+  border: none;
+  color: #fff;
+}
+
+.btn-crosstalk:hover {
+  background-color: #ff3399;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+}
+
+.btn-crosstalk-secondary {
+  background-color: #00bfff;
+  border: none;
+  color: #fff;
+}
+
+.btn-crosstalk-secondary:hover {
+  background-color: #00cccc;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+}

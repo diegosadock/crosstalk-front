@@ -1,35 +1,22 @@
 <div class="login-container d-flex align-items-center justify-content-center">
-    <div class="login-card shadow p-4 rounded-4 bg-white">
-      <h2 class="text-center mb-4 crosstalk-logo">Crosstalk</h2>
-  
-      <form #loginForm="ngForm">
-        <div class="mb-3">
-          <input
-            type="text"
-            class="form-control form-control-lg rounded-pill input-style"
-            placeholder="Email"
-            name="email"
-            [(ngModel)]="usuario.emailUsuario"
-            required />
-        </div>
-  
-        <div class="mb-4">
-          <input
-            type="password"
-            class="form-control form-control-lg rounded-pill input-style"
-            placeholder="Senha"
-            name="senha"
-            [(ngModel)]="usuario.senhaUsuario"
-            required />
-        </div>
-  
-        <button
-          class="btn btn-gradient w-100 rounded-pill"
-          [disabled]="!loginForm.form.valid" (click)="logar()">
-          Login
-        </button>
-        <span id="msg" *ngIf="mensagem != ''"> {{ mensagem }}</span>
-      </form>
-    </div>
+  <div class="login-card shadow p-4 rounded-4 bg-white">
+    <h2 class="text-center mb-4 crosstalk-logo">Crosstalk</h2>
+
+    <form #loginForm="ngForm">
+      <div class="mb-3">
+        <input type="text" class="form-control form-control-lg rounded-pill input-style" placeholder="Email"
+          name="email" [(ngModel)]="usuario.emailUsuario" required />
+      </div>
+
+      <div class="mb-4">
+        <input type="password" class="form-control form-control-lg rounded-pill input-style" placeholder="Senha"
+          name="senha" [(ngModel)]="usuario.senhaUsuario" required />
+      </div>
+
+      <button class="btn btn-gradient w-100 rounded-pill" [disabled]="!loginForm.form.valid" (click)="logar()">
+        Login
+      </button>
+      <span id="msg" *ngIf="mensagem != ''"> {{ mensagem }}</span>
+    </form>
   </div>
-  
+</div>

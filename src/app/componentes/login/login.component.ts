@@ -25,6 +25,7 @@ export class LoginComponent {
         next: (res: CrosstalkToken) => {
           this.loading = false;
           localStorage.setItem("CrosstalkTK", res.token);
+          localStorage.setItem("Usuario", JSON.stringify(res.usuario));
           this.route.navigate(['main']);
         },
         error: (err: any) => {

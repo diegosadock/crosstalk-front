@@ -1,23 +1,53 @@
-<div class="container-fluid bg-dark text-light min-vh-100">
-    <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-3 p-3 border-end border-secondary">
-        <div class="text-center mb-4">
-          <img [src]="usuario.avatar" alt="Avatar" class="rounded-circle" width="60" />
-          <h5 class="mt-2">{{ usuario.nomeUsuario }}</h5>
-          <p class="text-muted">{{ usuario.nomeUsuario }}</p>
+<div class="container mt-4">
+  <div *ngIf="usuario; else loading" class="profile-card">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <!-- Avatar Section -->
+        <div class="avatar-container mb-4">
+          <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar" />
         </div>
-  
-        <div class="list-group">
-          <button class="list-group-item list-group-item-action bg-dark text-light border-secondary">
-            <i class="bi bi-house-fill me-2"></i> Main Feed
-          </button>
-          <button class="list-group-item list-group-item-action bg-dark text-light border-secondary">
-            <i class="bi bi-people-fill me-2"></i> Abraxas Society
-          </button>
-          <!-- Adicione outros contatos abaixo -->
+
+        <!-- User Info Section -->
+        <h2 class="username">{{ usuario.nomeUsuario }}</h2>
+        <p class="user-email">{{ usuario.emailUsuario }}</p>
+
+        <!-- Bio Section -->
+        <p *ngIf="usuario.bio" class="user-bio">{{ usuario.bio }}</p>
+
+        <!-- Profile Stats -->
+        <div class="row justify-content-center mt-3 profile-stats">
+          <div class="col-4">
+            <p class="stat-label">Cidade</p>
+            <p class="stat-info">{{ usuario.cidade }}</p>
+          </div>
+          <div class="col-4">
+            <p class="stat-label">Nascimento</p>
+            <p class="stat-info">{{ usuario.dataNascimento | date:'dd/MM/yyyy' }}</p>
+          </div>
+          <div class="col-4">
+            <p class="stat-label">Cadastro</p>
+            <p class="stat-info">{{ usuario.dataCadastro | date:'dd/MM/yyyy' }}</p>
+          </div>
         </div>
-      </div> <!-- Fim da col-md-3 -->
-    </div> <!-- Fim da row -->
-  </div> <!-- Fim do container-fluid -->
-  
+
+        <!-- Status Section -->
+        <p *ngIf="usuario.status" class="user-status" [ngClass]="{'active-status': usuario.status === 'ativo', 'inactive-status': usuario.status !== 'ativo'}">
+          Status: {{ usuario.status }}
+        </p>
+
+        <!-- Buttons Section -->
+        <div class="mt-4">
+          <button class="btn btn-crosstalk">Editar Perfil</button>
+          <button class="btn btn-crosstalk-secondary ml-2">Configurações</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <ng-template #loading>
+    <div class="text-center">
+      <p>Carregando dados do usuário...</p>
+    </div>
+  </ng-template>
+</div>
