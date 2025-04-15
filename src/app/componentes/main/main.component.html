@@ -1,0 +1,23 @@
+<div class="container-fluid bg-dark text-light min-vh-100">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 p-3 border-end border-secondary">
+        <div class="text-center mb-4">
+          <img [src]="usuario.avatar" alt="Avatar" class="rounded-circle" width="60" />
+          <h5 class="mt-2">{{ usuario.nomeUsuario }}</h5>
+          <p class="text-muted">{{ usuario.nomeUsuario }}</p>
+        </div>
+  
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+            <i class="bi bi-house-fill me-2"></i> Main Feed
+          </button>
+          <button class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+            <i class="bi bi-people-fill me-2"></i> Abraxas Society
+          </button>
+          <!-- Adicione outros contatos abaixo -->
+        </div>
+      </div> <!-- Fim da col-md-3 -->
+    </div> <!-- Fim da row -->
+  </div> <!-- Fim do container-fluid -->
+  

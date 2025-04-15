@@ -1,0 +1,47 @@
+body {
+    background: linear-gradient(to bottom right, #e0e7ff, #f3e8ff);
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .login-container {
+    height: 100vh;
+    background: linear-gradient(to right, #d8dfff, #f0e0ff);
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    border-radius: 1rem;
+  }
+  
+  .crosstalk-logo {
+    font-family: 'Poppins', sans-serif;
+    color: #7c3aed;
+    font-weight: 600;
+  }
+  
+  .input-style {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .input-style:focus {
+    border-color: #b983ff;
+    box-shadow: 0 0 0 0.25rem rgba(185, 131, 255, 0.25);
+  }
+  
+  .btn-gradient {
+    background: linear-gradient(to right, #a78bfa, #c084fc);
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-gradient:hover {
+    background: linear-gradient(to right, #c084fc, #a78bfa);
+  }
+  
