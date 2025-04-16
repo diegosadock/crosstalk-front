@@ -1,53 +1,62 @@
-<div class="container mt-4">
-  <div *ngIf="usuario; else loading" class="profile-card">
-    <div class="row justify-content-center">
-      <div class="col-md-6 text-center">
-        <!-- Avatar Section -->
-        <div class="avatar-container mb-4">
-          <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar" />
+<div class="container-fluid bg-dark text-light min-vh-100">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 p-3 sidebar">
+      <app-sidebar></app-sidebar>
+    </div> <!-- Fim da sidebar -->
+
+    <!-- Main Feed -->
+    <div class="col-md-9 p-4 main">
+      <div class="feed-card bg-light p-3 rounded shadow-sm">
+        <div class="feed-header mb-3">
+          <h4 class="feed-title">Main Feed</h4>
         </div>
 
-        <!-- User Info Section -->
-        <h2 class="username">{{ usuario.nomeUsuario }}</h2>
-        <p class="user-email">{{ usuario.emailUsuario }}</p>
-
-        <!-- Bio Section -->
-        <p *ngIf="usuario.bio" class="user-bio">{{ usuario.bio }}</p>
-
-        <!-- Profile Stats -->
-        <div class="row justify-content-center mt-3 profile-stats">
-          <div class="col-4">
-            <p class="stat-label">Cidade</p>
-            <p class="stat-info">{{ usuario.cidade }}</p>
+        <div class="new-post card p-3 mb-4" *ngIf="usuario">
+          <div class="d-flex align-items-start">
+            <img [src]="usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-3"/>
+            <textarea class="form-control post-input" rows="2" [(ngModel)]="postagem.conteudo"
+              placeholder="O que você está pensando, {{ usuario?.nomeUsuario }}?"></textarea>
           </div>
-          <div class="col-4">
-            <p class="stat-label">Nascimento</p>
-            <p class="stat-info">{{ usuario.dataNascimento | date:'dd/MM/yyyy' }}</p>
-          </div>
-          <div class="col-4">
-            <p class="stat-label">Cadastro</p>
-            <p class="stat-info">{{ usuario.dataCadastro | date:'dd/MM/yyyy' }}</p>
+          <div class="text-end mt-2">
+            <button class="btn btn-post px-4" (click)="publicar()">Publicar</button>
           </div>
         </div>
 
-        <!-- Status Section -->
-        <p *ngIf="usuario.status" class="user-status" [ngClass]="{'active-status': usuario.status === 'ativo', 'inactive-status': usuario.status !== 'ativo'}">
-          Status: {{ usuario.status }}
-        </p>
+        <!-- Lista de postagens -->
+        <div *ngFor="let post of postagens" class="post card mb-3 p-3">
+          <div class="post-header d-flex align-items-center mb-2">
+            <img [src]="post.usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-2" (click)="irParaPerfil(post.usuario.idUsuario)"/>
+            <strong class="post-username">{{ post.usuario?.nomeUsuario }}</strong>
+            <small class="ms-auto text-muted">{{ post.dataPostagem | date: 'dd/MM/yyyy HH:mm' }}</small>
+          </div>
+          <p class="post-content mb-1">{{ post.conteudo }}</p>
+          <img *ngIf="post.imagemUrl" [src]="post.imagemUrl" class="img-fluid rounded" />
 
-        <!-- Buttons Section -->
-        <div class="mt-4">
-          <button class="btn btn-crosstalk">Editar Perfil</button>
-          <button class="btn btn-crosstalk-secondary ml-2">Configurações</button>
-        </div>
+          <!-- Interações -->
+          <div class="d-flex gap-3 mt-2">
+            <span class="btn-action btn-like">
+              <i class="fas fa-heart"></i>
+              <span class="btn-text ms-2">0</span>
+              <span class="tooltip">Curtir</span>
+            </span>
+            
+            <span class="btn-action btn-comment">
+              <i class="fas fa-comment-alt"></i>
+              <span class="btn-text ms-2">0</span>
+              <span class="tooltip">Comentar</span>
+            </span>
+            
+            <span class="btn-action btn-share">
+              <i class="fas fa-share"></i>
+              <span class="btn-text ms-2">0</span>
+              <span class="tooltip">Compartilhar</span>
+            </span>
+            
+          </div>
+
+        </div> <!-- Fim do post -->
       </div>
-    </div>
+    </div> <!-- Fim da Main Feed -->
   </div>
-
-  <!-- Loading State -->
-  <ng-template #loading>
-    <div class="text-center">
-      <p>Carregando dados do usuário...</p>
-    </div>
-  </ng-template>
 </div>

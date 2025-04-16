@@ -1,46 +1,88 @@
-<div class="container mt-4">
-    <div *ngIf="usuario; else loading" class="profile-card">
-      <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
-          <!-- Avatar Section -->
-          <div class="avatar-container mb-4">
-            <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar" />
-          </div>
-  
-          <!-- User Info Section -->
-          <h2 class="username">{{ usuario.nomeUsuario }}</h2>
-          <p class="user-email">{{ usuario.emailUsuario }}</p>
-  
-          <!-- Profile Stats (Optional) -->
-          <div class="row justify-content-center mt-3 profile-stats">
-            <div class="col-4">
-              <p class="stat-count">120</p>
-              <p class="stat-label">Postagens</p>
-            </div>
-            <div class="col-4">
-              <p class="stat-count">230</p>
-              <p class="stat-label">Amigos</p>
-            </div>
-            <div class="col-4">
-              <p class="stat-count">320</p>
-              <p class="stat-label">Comentários</p>
-            </div>
-          </div>
-  
-          <!-- Buttons Section -->
-          <div class="mt-4">
-            <button class="btn btn-crosstalk">Editar Perfil</button>
-            <button class="btn btn-crosstalk-secondary ml-2">Configurações</button>
-          </div>
-        </div>
-      </div>
+<div class="d-flex" style="min-height: 100vh; background-color: rgb(32, 31, 31); color: white;">
+    <!-- Sidebar -->
+    <div style="width: 380px; background-color: #221C3A; padding: 20px;">
+        <app-sidebar></app-sidebar>
     </div>
-  
-    <!-- Loading State -->
-    <ng-template #loading>
-      <div class="text-center">
-        <p>Carregando dados do usuário...</p>
-      </div>
-    </ng-template>
-  </div>
-  
+
+    <!-- Conteúdo Principal -->
+    <div class="flex-grow-1 p-4">
+        <!-- Loading State -->
+        <ng-template #loading>
+            <div class="text-center">
+                <p>Carregando dados do usuário...</p>
+            </div>
+        </ng-template>
+
+        <!-- Sem Postagens -->
+        <ng-template #semPosts>
+            <div class="alert alert-info text-center">
+                Nenhuma postagem por aqui ainda...
+            </div>
+        </ng-template>
+
+        <!-- Perfil do Usuário -->
+        <div *ngIf="usuario; else loading" class="profile-card">
+            <div class="text-center">
+                <!-- Avatar com bolinha colorida ao lado -->
+                <div class="avatar-container position-relative d-inline-block">
+                    <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar mb-3" />
+                    <span class="status-indicator" 
+                          [ngClass]="{
+                              'active-status': usuario.status === 'ativo', 
+                              'busy-status': usuario.status === 'ocupado',
+                              'away-status': usuario.status === 'ausente',
+                              'offline-status': usuario.status === 'offline'
+                          }" 
+                          [attr.title]="usuario.status || 'Status desconhecido'">
+                    </span>
+                </div>
+
+                <h2 class="username">{{ usuario.nomeUsuario }}</h2>
+                <p class="user-email">&#64;{{ usuario.nomeUsuario }}</p>
+                <p *ngIf="usuario.bio" class="user-bio">{{ usuario.bio }}</p>
+
+                <div class="row justify-content-center mt-3 profile-stats">
+                    <div class="col-4">
+                        <p class="stat-label">Cidade</p>
+                        <p class="stat-info">{{ usuario.cidade }}</p>
+                    </div>
+                    <div class="col-4">
+                        <p class="stat-label">Nascimento</p>
+                        <p class="stat-info">{{ usuario.dataNascimento | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                    <div class="col-4">
+                        <p class="stat-label">Cadastro</p>
+                        <p class="stat-info">{{ usuario.dataCadastro | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button class="btn btn-crosstalk" *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Editar
+                        Perfil</button>
+                    <button class="btn btn-crosstalk-secondary ml-2"
+                        *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Configurações</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Postagens -->
+        <div *ngIf="postagens.length > 0; else semPosts" class="mt-4">
+            <div *ngFor="let post of postagens" class="post card bg-dark text-white mb-3 p-3 border-0">
+                <div class="post-header d-flex align-items-center mb-2">
+                    <img [src]="post.usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-2" />
+                    <strong class="post-username">{{ post.usuario?.nomeUsuario }}</strong>
+                    <small class="ms-auto">{{ post.dataPostagem | date: 'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+                <p class="post-content mb-1">{{ post.conteudo }}</p>
+                <img *ngIf="post.imagemUrl" [src]="post.imagemUrl" class="img-fluid rounded" />
+                <div class="d-flex gap-3 mt-2">
+                    <span class="btn-action btn-like"><i class="fas fa-heart"></i><span class="btn-text ms-2">0</span></span>
+                    <span class="btn-action btn-comment"><i class="fas fa-comment-alt"></i><span
+                            class="btn-text ms-2">0</span></span>
+                    <span class="btn-action btn-share"><i class="fas fa-share"></i><span
+                            class="btn-text ms-2">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+/* Sidebar */
+.sidebar {
+    background-color: #221c3a; /* Cor de fundo da sidebar */
+    padding: 20px 15px; /* Espaçamento interno */
+    position: fixed; /* Fixa a sidebar */
+    top: 0; /* Alinha a sidebar ao topo */
+    left: 0; /* Alinha a sidebar à esquerda */
+    height: 100vh; /* Faz a sidebar ocupar toda a altura da tela */
+    width: 25%; /* Largura da sidebar */
+    z-index: 1000; /* Garante que a sidebar fique à frente do conteúdo */
+    border-right: 1px solid #ff91b3;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    border: 2px solid #ff91b3;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 90px;
+    height: 90px;
+  }
+  
+  .avatar:hover {
+    transform: scale(1.05);
+  }
+  
+  .list-group-item {
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    background-color: transparent;
+    color: #e3e3f3;
+    transition: background 0.3s ease, color 0.3s ease, border-radius 0.3s ease; /* Adiciona transição ao border-radius */
+  }
+  
+  .list-group-item:hover {
+    background-color: rgba(174, 129, 255, 0.15);
+    color: #ff91b3;
+    font-weight: 500;
+    border-radius: 20px; /* Aplica o border-radius no hover */
+  }
+
+  .menu-item i {
+    margin-right: 15px; /* Distância entre o ícone e o texto */
+    font-size: 23px;
+  }
+  
+  .menu-item .mainFeed,
+  .menu-item .abraxas {
+    margin-left: 15px; /* Ajuste a distância conforme necessário */
+  }
+
+  
+  
+  

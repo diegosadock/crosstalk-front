@@ -1,106 +1,252 @@
-/* Global Styles */
 body {
-  background-color: #121212; /* Fundo escuro estilo Crosstalk */
-  color: #f5f5f5; /* Texto claro */
-  font-family: 'Arial', sans-serif;
+  background-color: #221c3a;
+  font-family: 'Segoe UI', sans-serif;
+  color: #e3e3f3;
 }
 
-/* Profile Card */
-.profile-card {
-  background-color: #1e1e1e;
-  padding: 20px;
+.container-fluid {
+  height: 100vh;
+}
+
+.row {
+  min-height: 100%;
+}
+
+/* Sidebar */
+.col-md-3 {
+  background-color: #221c3a;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.avatar {
+  border-radius: 50%;
+  border: 2px solid #ff91b3;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 90px;
+  height: 90px;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+.list-group-item {
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  background-color: transparent;
+  color: #e3e3f3;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: rgba(174, 129, 255, 0.15);
+  color: #ff91b3;
+  font-weight: 500;
+}
+
+/* Main Feed */
+.col-md-9 {
+  background-color: #221c3a;
+  padding: 30px;
+}
+
+.feed-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ae81ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.feed-card,
+.post {
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(174, 129, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Avatar */
-.profile-avatar {
-  width: 150px;
-  height: 150px;
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  margin-bottom: 10px;
+}
+
+.post-avatar {
+  width: 60px;
+  height: 60px;
   object-fit: cover;
-  border: 4px solid #ff00ff;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+  border-radius: 50%;
+  border: 2px solid #82cfff;
+  cursor: pointer;
 }
 
-/* Username */
-.username {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 10px;
-  color: #ff00ff;
+.post-header strong {
+  color: #ae81ff;
+  font-size: 16px;
 }
 
-/* Email */
-.user-email {
-  font-size: 1rem;
-  color: #ddd;
+.post-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #828288;
 }
 
-/* Bio */
-.user-bio {
-  font-size: 1.1rem;
-  color: #bbb;
-  margin-top: 10px;
+.post-text {
+  font-size: 15px;
+  color: #666669;
 }
 
-/* Profile Stats */
-.profile-stats {
-  font-size: 1.1rem;
-  color: #ccc;
+.new-post {
+  background-color: #fff;
+  border: 1px solid #f3e5f5;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.stat-label {
-  color: #bbb;
+.post-avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-.stat-info {
-  color: #00bfff;
-  font-weight: bold;
+.post-input {
+  resize: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background-color: #fafafa;
 }
 
-/* Status */
-.user-status {
-  font-size: 1rem;
-  margin-top: 10px;
-}
-
-.active-status {
-  color: #32cd32; /* Verde para status ativo */
-}
-
-.inactive-status {
-  color: #ff6347; /* Vermelho para status inativo */
-}
-
-/* Buttons */
-.btn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  text-transform: uppercase;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  margin-left: 15px;
-}
-
-.btn-crosstalk {
-  background-color: #ff00ff;
+.btn-post {
+  background-color: #ae81ff; /* rosa bebê */
+  color: white;
   border: none;
-  color: #fff;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
 }
 
-.btn-crosstalk:hover {
-  background-color: #ff3399;
-  box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+.btn-post:hover {
+  background-color:
+  #ae81ff;
 }
 
-.btn-crosstalk-secondary {
-  background-color: #00bfff;
-  border: none;
-  color: #fff;
+/* Adiciona um fundo mais suave e opaco à bolinha */
+.btn-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  background: transparent;
+  color: #82cfff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.btn-crosstalk-secondary:hover {
-  background-color: #00cccc;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+/* Descrição que aparece abaixo do ícone */
+.tooltip {
+  display: none;
+  position: absolute;
+  bottom: -25px; /* Ajuste para ficar logo abaixo do botão */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
+
+/* Bolinha transparente sobre o ícone */
+.btn-action:hover::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transition: width 0.2s ease, height 0.2s ease;
+}
+
+/* Efeito de hover para mostrar a bolinha e a descrição */
+.btn-action:hover {
+  color: #ff91b3;
+}
+
+.btn-action:hover .tooltip {
+  display: block;
+  opacity: 1;
+}
+
+/* Bolinha sobre o ícone */
+.btn-action:hover::after {
+  content: '';
+  position: absolute;
+  top: 5px; /* Ajusta a posição para cima */
+  left: 35%;
+  transform: translateX(-50%);
+  width: 30px; /* Tamanho da bolinha */
+  height: 30px;
+  background-color: #F91880;
+  opacity: 0.1;
+  border-radius: 50%;
+  transition: width 0.2s ease, height 0.2s ease, top 0.2s ease;
+}
+
+
+/* Estilo do ícone */
+.btn-text {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.btn-text i {
+  margin-right: 5px;
+}
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .col-md-3, .col-md-9 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .feed-title {
+    font-size: 20px;
+  }
+
+  .list-group-item {
+    font-size: 14px;
+  }
+
+  .post-header strong {
+    font-size: 14px;
+  }
+
+  .post-text {
+    font-size: 14px;
+  }
+}
+
+
