@@ -3,7 +3,7 @@ export class Usuario {
     nomeUsuario: string = "";
     emailUsuario: string = "";
     senhaUsuario: string = "";
-    avatar: string = "/assets/profile.jpeg";  // Foto de perfil, que pode vir do backend
+    fotoPerfil: string = "";  // Foto de perfil, que pode vir do backend
     dataCadastro: string = ""; // Data de cadastro, pode vir como string em formato 'yyyy-MM-dd'
     bio: string = "";  // Bio do usuário
     cidade: string = "";  // Cidade do usuário

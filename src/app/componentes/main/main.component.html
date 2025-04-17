@@ -14,19 +14,49 @@
 
         <div class="new-post card p-3 mb-4" *ngIf="usuario">
           <div class="d-flex align-items-start">
-            <img [src]="usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-3"/>
-            <textarea class="form-control post-input" rows="2" [(ngModel)]="postagem.conteudo"
-              placeholder="O que você está pensando, {{ usuario?.nomeUsuario }}?"></textarea>
-          </div>
-          <div class="text-end mt-2">
-            <button class="btn btn-post px-4" (click)="publicar()">Publicar</button>
+            <img [src]="usuario?.fotoPerfil || '/assets/profile.jpg'" class="post-avatar me-3" />
+            <div class="flex-grow-1">
+              <textarea class="form-control post-input" rows="2" [(ngModel)]="postagem.conteudo"
+                placeholder="O que você está pensando, {{ usuario?.nomeUsuario }}?"></textarea>
+
+              <div *ngIf="postagem.midias && postagem.midias.length">
+                <div *ngFor="let midia of postagem.midias">
+                  <img *ngIf="midia.linkMidia" [src]="midia.linkMidia" alt="Preview" class="img-preview" />
+                  <a href="{{ midia.linkMidia }}" target="_blank">{{ midia.descricao }}</a>
+                </div>
+              </div>
+
+              <!-- Barra de botões -->
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="post-actions">
+                  <button type="button" class="btn btn-light btn-sm me-2" id="btnModalUpload" title="Adicionar imagem"
+                    data-bs-toggle="modal" data-bs-target="#modalUpload">
+                    <i class="fas fa-image"></i>
+                  </button>
+                  <button class="btn btn-light btn-sm me-2" title="Adicionar GIF" (click)="selecionarGif()">
+                    <i class="fas fa-file-video"></i>
+                  </button>
+                  <button class="btn btn-light btn-sm" title="Adicionar emoji" (click)="abrirEmojiPicker()">
+                    <i class="fas fa-smile"></i>
+                  </button>
+                </div>
+                <!-- input escondido para imagem -->
+                <input type="file" #fileInput accept="image/*" (change)="onImagemSelecionada($event)" hidden>
+                <div *ngIf="postagem.imagemUrl">
+                  <img [src]="postagem.imagemUrl" alt="Preview" class="img-preview" />
+                </div>
+                <button class="btn btn-post px-4" (click)="publicar()">Publicar</button>
+              </div>
+            </div>
           </div>
         </div>
+
 
         <!-- Lista de postagens -->
         <div *ngFor="let post of postagens" class="post card mb-3 p-3">
           <div class="post-header d-flex align-items-center mb-2">
-            <img [src]="post.usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-2" (click)="irParaPerfil(post.usuario.idUsuario)"/>
+            <img [src]="post.usuario?.fotoPerfil || '/assets/profile.jpg'" class="post-avatar me-2"
+              (click)="irParaPerfil(post.usuario.idUsuario)" />
             <strong class="post-username">{{ post.usuario?.nomeUsuario }}</strong>
             <small class="ms-auto text-muted">{{ post.dataPostagem | date: 'dd/MM/yyyy HH:mm' }}</small>
           </div>
@@ -40,23 +70,181 @@
               <span class="btn-text ms-2">0</span>
               <span class="tooltip">Curtir</span>
             </span>
-            
+
             <span class="btn-action btn-comment">
               <i class="fas fa-comment-alt"></i>
-              <span class="btn-text ms-2">0</span>
+              <span class="btn-text ms-2">{{ post.comentarios ? post.comentarios.length : 0 }}</span>
               <span class="tooltip">Comentar</span>
             </span>
-            
+
             <span class="btn-action btn-share">
               <i class="fas fa-share"></i>
               <span class="btn-text ms-2">0</span>
               <span class="tooltip">Compartilhar</span>
             </span>
-            
           </div>
 
+          <!-- Comentários -->
+          <div *ngIf="post.comentarios && post.comentarios.length" class="comments-section mt-3">
+            <div *ngFor="let comentario of post.comentarios | slice:0:3" class="comment card mb-2 p-2">
+              <div class="d-flex align-items-start">
+                <img [src]="comentario.usuario?.fotoPerfil || '/assets/profile.jpg'" class="comment-avatar me-3" />
+                <div class="flex-grow-1">
+                  <strong>{{ comentario.usuario?.nomeUsuario }}</strong>
+                  <p>{{ comentario.conteudo }}</p>
+                </div>
+              </div>
+
+              <!-- Botões de interação dos comentários -->
+              <div class="comment-actions d-flex gap-3 mt-2">
+                <span class="btn-action btn-like">
+                  <i class="fas fa-heart"></i>
+                  <span class="btn-text ms-2">0</span>
+                  <span class="tooltip">Curtir</span>
+                </span>
+
+                <span class="btn-action btn-comment">
+                  <i class="fas fa-comment-alt"></i>
+                  <span class="btn-text ms-2">0</span>
+                  <span class="tooltip">Comentar</span>
+                </span>
+
+                <span class="btn-action btn-share">
+                  <i class="fas fa-share"></i>
+                  <span class="btn-text ms-2">0</span>
+                  <span class="tooltip">Compartilhar</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Ver mais comentários -->
+            <div *ngIf="post.comentarios.length > 3" class="mt-3">
+              <button class="btn btn-link">
+                Ver mais comentários ({{ post.comentarios.length - 3 }} adicionais)
+              </button>
+            </div>
+          </div>
+
+          <!-- Botão invisível para abrir o modal -->
+          <button type="button" style="visibility: hidden;" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#modalComentarios" id="btnModalComentarios">
+            Launch demo modal
+          </button>
+
+          <!-- Modal para mostrar todos os comentários -->
+          <div *ngIf="modalAberto" class="modal fade" tabindex="-1" aria-modal="true" role="dialog"
+            id="modalComentarios">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Comentários do Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div *ngFor="let comentario of post.comentarios" class="comment card mb-2 p-2">
+                    <div class="d-flex align-items-start">
+                      <img [src]="comentario.usuario?.fotoPerfil || '/assets/profile.jpg'"
+                        class="comment-avatar me-3" />
+                      <div class="flex-grow-1">
+                        <strong>{{ comentario.usuario?.nomeUsuario }}</strong>
+                        <p>{{ comentario.conteudo }}</p>
+                      </div>
+                    </div>
+                    <!-- Botões de interação dos comentários -->
+                    <div class="comment-actions d-flex gap-3 mt-2">
+                      <span class="btn-action btn-like">
+                        <i class="fas fa-heart"></i>
+                        <span class="btn-text ms-2">0</span>
+                        <span class="tooltip">Curtir</span>
+                      </span>
+
+                      <span class="btn-action btn-comment">
+                        <i class="fas fa-comment-alt"></i>
+                        <span class="btn-text ms-2">0</span>
+                        <span class="tooltip">Comentar</span>
+                      </span>
+
+                      <span class="btn-action btn-share">
+                        <i class="fas fa-share"></i>
+                        <span class="btn-text ms-2">0</span>
+                        <span class="tooltip">Compartilhar</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+
+          <!-- Formulário para comentar -->
+          <div *ngIf="isComentando(post)" class="new-comment mt-3">
+            <div class="d-flex align-items-start">
+              <img [src]="usuario?.fotoPerfil || '/assets/profile.jpg'" class="comment-avatar me-3" />
+              <div class="flex-grow-1">
+                <textarea class="form-control comment-input" rows="2" [(ngModel)]="comentarios[postagem.id].conteudo"
+                  placeholder="Escreva um comentário..."></textarea>
+
+                <!-- Barra de botões -->
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <div class="comment-actions">
+                    <button type="button" class="btn btn-light btn-sm me-2" title="Adicionar imagem"
+                      data-bs-toggle="modal" data-bs-target="#modalUpload">
+                      <i class="fas fa-image"></i>
+                    </button>
+                    <button class="btn btn-light btn-sm me-2" title="Adicionar GIF" (click)="selecionarGif()">
+                      <i class="fas fa-file-video"></i>
+                    </button>
+                    <button class="btn btn-light btn-sm" title="Adicionar emoji" (click)="abrirEmojiPicker()">
+                      <i class="fas fa-smile"></i>
+                    </button>
+                  </div>
+
+                  <!-- input escondido para imagem -->
+                  <input type="file" #fileInput accept="image/*" (change)="onImagemSelecionada($event)" hidden>
+
+                  <button class="btn btn-primary" (click)="comentar(post)">Comentar</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div> <!-- Fim do post -->
       </div>
     </div> <!-- Fim da Main Feed -->
+  </div>
+</div>
+
+<!-- ================== MODAIS ================== -->
+<!-- Botão invisível para abrir o modal programaticamente -->
+<button type="button" style="visibility: hidden;" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalUploadMidia" id="btnModalUploadMidia">
+  Launch demo modal
+</button>
+
+<!-- Modal para Upload de Midias -->
+<div class="modal fade" id="modalUpload" tabindex="-1" aria-labelledby="modalUploadLabel" aria-hidden="true"
+  data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Upload de Midias (Fotos/Videos)</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <label for="txtDescricaoMidia" class="form-label">Descrição</label>
+        <input type="text" class="form-control" id="txtDescricaoMidia" [(ngModel)]="midiaDesc">
+
+        <label for="fileName" class="form-label mt-3">Selecionar Arquivo</label>
+        <input type="file" id="fileName" class="form-control mt-1" (change)="realizarUpload($event)">
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+
+    </div>
   </div>
 </div>

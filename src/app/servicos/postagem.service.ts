@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Postagem } from '../model/Postagem';
 import { Observable } from 'rxjs';
+import { Midia } from '../model/Midia';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class PostagemService {
 
   listarPorUsuario(idUsuario: number): Observable<Postagem[]> {
     return this.http.get<Postagem[]>(environment.apiURL+"/postagens/usuario/"+idUsuario)
+  }
+
+  criarMidia(midia: Midia): Observable<Midia> {
+    return this.http.post<Midia>(`${environment.apiURL}/midias`, midia);
   }
 
 }

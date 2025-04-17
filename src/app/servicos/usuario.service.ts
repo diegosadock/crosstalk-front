@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Usuario } from '../model/Usuario';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 // Importe o modelo de usuário, se necessário
@@ -26,7 +26,7 @@ export class UsuarioService {
         nomeUsuario: 'Visitante', // Nome padrão para um usuário não autenticado
         emailUsuario: '', // Sem email, pois é um visitante
         senhaUsuario: '', // Sem senha, pois é um visitante
-        avatar: '/assets/profile.jpeg', // Foto padrão
+        fotoPerfil: '/assets/profile.jpeg', // Foto padrão
         dataCadastro: '', // Data de cadastro vazia ou você pode inicializar com a data atual
         bio: '', // Bio vazia
         cidade: '', // Cidade vazia
@@ -56,4 +56,11 @@ export class UsuarioService {
 
     return this.http.get<Usuario>(`${environment.apiURL}/usuarios/${id}`, { headers });
   }
+
+  atualizarCampoFoto(id: number, nomeArquivo: string): Observable<Usuario> {
+    const params = new HttpParams().set('nomeArquivo', nomeArquivo);
+    return this.http.put<Usuario>(`/api/usuarios/${id}/avatar`, null, { params });
+  }
+  
+  
 }

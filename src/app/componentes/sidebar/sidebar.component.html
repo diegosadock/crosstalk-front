@@ -2,8 +2,8 @@
     <!-- Sidebar Fixa -->
     <div class="col-md-3 p-3 sidebar">
       <div class="profile text-center mb-4">
-        <img [src]="usuario?.avatar || '/assets/profile.jpeg'" (click)="irParaPerfil(usuario.idUsuario)" alt="Avatar"
-          class="avatar" width="60" />
+        <img [src]="usuario?.fotoPerfil || '/assets/profile.jpg'" (click)="irParaPerfil(usuario.idUsuario)" alt="fotoPerfil"
+          class="fotoPerfil rounded-circle" width="60" />
         <h5 class="mt-2">{{ usuario?.nomeUsuario }}</h5>
         <p>&#64;{{ usuario?.nomeUsuario }}</p>
       </div>

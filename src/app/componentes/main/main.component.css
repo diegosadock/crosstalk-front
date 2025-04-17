@@ -68,7 +68,6 @@ body {
   padding: 15px;
   margin-bottom: 20px;
   box-shadow: 0 0 10px rgba(174, 129, 255, 0.1);
-  backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -136,8 +135,7 @@ body {
 }
 
 .btn-post:hover {
-  background-color:
-  #ae81ff;
+  background-color: #ae81ff;
 }
 
 /* Adiciona um fundo mais suave e opaco à bolinha */
@@ -212,7 +210,6 @@ body {
   transition: width 0.2s ease, height 0.2s ease, top 0.2s ease;
 }
 
-
 /* Estilo do ícone */
 .btn-text {
   margin-left: 5px;
@@ -223,7 +220,90 @@ body {
   margin-right: 5px;
 }
 
+.img-preview {
+  max-width: 100%;   /* Limita o tamanho da imagem ao tamanho da tela */
+  height: auto;      /* Ajusta a altura automaticamente para manter a proporção */
+  max-height: 200px; /* Define a altura máxima da imagem */
+  object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+}
 
+/* Estilo geral da seção de comentários */
+/* Estilo geral da seção de comentários */
+.comments-section {
+  padding: 20px;
+  background-color: #2a2a2a; /* Fundo escuro inspirado no Crosstalk */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Sombras suaves para destacar */
+}
+
+/* Estilo de cada comentário */
+.comment {
+  background-color: #353535; /* Fundo do comentário mais escuro */
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Efeito de hover para cada comentário */
+.comment:hover {
+  cursor: pointer;
+}
+
+/* Estilo para o avatar do usuário */
+.comment-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Estilo para o nome do usuário */
+.comment strong {
+  font-size: 1.1rem;
+  color: #ff7e98; /* Cor suave de rosa/roxo inspirado no estilo de Life is Strange */
+  font-weight: bold;
+}
+
+/* Estilo para o conteúdo do comentário */
+.comment p {
+  font-size: 1rem;
+  color: #dcdcdc; /* Cor suave e neutra para o conteúdo */
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: all 0.2s ease;
+}
+
+.comment-actions button:hover {
+  color: #ff7e98; /* Cor de hover rosa/roxo */
+  transform: scale(1.1);
+}
+
+.comment strong:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #82cfff;
+}
+
+/* Estilo do botão "Ver mais comentários" */
+.btn-link {
+  font-size: 0.9rem;
+  color: #ff7e98;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -248,5 +328,3 @@ body {
     font-size: 14px;
   }
 }
-
-

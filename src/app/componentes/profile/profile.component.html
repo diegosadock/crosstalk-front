@@ -25,16 +25,27 @@
             <div class="text-center">
                 <!-- Avatar com bolinha colorida ao lado -->
                 <div class="avatar-container position-relative d-inline-block">
-                    <img [src]="usuario.avatar || '/assets/profile.jpeg'" alt="Avatar" class="rounded-circle profile-avatar mb-3" />
-                    <span class="status-indicator" 
-                          [ngClass]="{
+                    <img [src]="usuario.fotoPerfil || '/assets/profile.jpg'" alt="fotoPerfil" (click)="abrirModalAvatar()"
+                        class="rounded-circle profile-avatar mb-3"/>
+                    <span class="status-indicator" [ngClass]="{
                               'active-status': usuario.status === 'ativo', 
                               'busy-status': usuario.status === 'ocupado',
                               'away-status': usuario.status === 'ausente',
                               'offline-status': usuario.status === 'offline'
-                          }" 
-                          [attr.title]="usuario.status || 'Status desconhecido'">
+                          }" [attr.title]="usuario.status || 'Status desconhecido'">
                     </span>
+                </div>
+
+                <!-- Modal para alteração de foto de perfil -->
+                <div *ngIf="mostrarModal" class="modal-backdrop">
+                    <div class="modal-content bg-dark text-white p-4 rounded">
+                        <h5>Alterar foto de perfil</h5>
+                        <input type="file" (change)="selecionarArquivo($event)" accept="image/*" class="form-control mt-2" />
+                        <div class="mt-3 d-flex justify-content-end">
+                            <button class="btn btn-secondary me-2" (click)="fecharModal()">Cancelar</button>
+                            <button class="btn btn-success" (click)="enviarAvatar()">Salvar</button>
+                        </div>
+                    </div>
                 </div>
 
                 <h2 class="username">{{ usuario.nomeUsuario }}</h2>
@@ -57,10 +68,8 @@
                 </div>
 
                 <div class="mt-4">
-                    <button class="btn btn-crosstalk" *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Editar
-                        Perfil</button>
-                    <button class="btn btn-crosstalk-secondary ml-2"
-                        *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Configurações</button>
+                    <button class="btn btn-crosstalk" *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Editar Perfil</button>
+                    <button class="btn btn-crosstalk-secondary ml-2" *ngIf="usuario.idUsuario == usuarioLogado?.idUsuario">Configurações</button>
                 </div>
             </div>
         </div>
@@ -69,7 +78,7 @@
         <div *ngIf="postagens.length > 0; else semPosts" class="mt-4">
             <div *ngFor="let post of postagens" class="post card bg-dark text-white mb-3 p-3 border-0">
                 <div class="post-header d-flex align-items-center mb-2">
-                    <img [src]="post.usuario?.avatar || '/assets/profile.jpeg'" class="post-avatar me-2" />
+                    <img [src]="post.usuario?.fotoPerfil || '/assets/profile.jpg'" class="post-avatar me-2" />
                     <strong class="post-username">{{ post.usuario?.nomeUsuario }}</strong>
                     <small class="ms-auto">{{ post.dataPostagem | date: 'dd/MM/yyyy HH:mm' }}</small>
                 </div>
@@ -77,10 +86,8 @@
                 <img *ngIf="post.imagemUrl" [src]="post.imagemUrl" class="img-fluid rounded" />
                 <div class="d-flex gap-3 mt-2">
                     <span class="btn-action btn-like"><i class="fas fa-heart"></i><span class="btn-text ms-2">0</span></span>
-                    <span class="btn-action btn-comment"><i class="fas fa-comment-alt"></i><span
-                            class="btn-text ms-2">0</span></span>
-                    <span class="btn-action btn-share"><i class="fas fa-share"></i><span
-                            class="btn-text ms-2">0</span></span>
+                    <span class="btn-action btn-comment"><i class="fas fa-comment-alt"></i><span class="btn-text ms-2">0</span></span>
+                    <span class="btn-action btn-share"><i class="fas fa-share"></i><span class="btn-text ms-2">0</span></span>
                 </div>
             </div>
         </div>
