@@ -59,7 +59,7 @@ export class UsuarioService {
 
   atualizarCampoFoto(id: number, nomeArquivo: string): Observable<Usuario> {
     const params = new HttpParams().set('nomeArquivo', nomeArquivo);
-    return this.http.put<Usuario>(`/api/usuarios/${id}/avatar`, null, { params });
+    return this.http.put<Usuario>(`${environment.apiURL}/usuarios/${id}/avatar`, null, { params });
   }
   
   

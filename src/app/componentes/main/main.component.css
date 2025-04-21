@@ -78,6 +78,25 @@ body {
   margin-bottom: 10px;
 }
 
+.post-comment-content {
+  color: white;
+}
+
+.form-control {
+  background-color: #212529;
+  color: white;
+  margin-top: 20px;
+  border: none;
+}
+
+#form-control-post {
+  color: black;
+}
+
+::-webkit-input-placeholder {
+  color: rgb(145, 145, 145);
+}
+
 .post-avatar {
   width: 60px;
   height: 60px;

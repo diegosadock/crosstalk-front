@@ -71,11 +71,49 @@
               <span class="tooltip">Curtir</span>
             </span>
 
-            <span class="btn-action btn-comment">
+            <!-- Modal -->
+            <!-- Botão de comentário que ativa o modal -->
+            <span class="btn-action btn-comment" id="btnComentarioUpload" title="Adicionar comentário"
+              data-bs-toggle="modal" data-bs-target="#modalComentariosUpload" [attr.data-conteudo]="postagem.conteudo"
+              [attr.data-id]="postagem.id" (click)="preencherModal(post)">
               <i class="fas fa-comment-alt"></i>
-              <span class="btn-text ms-2">{{ post.comentarios ? post.comentarios.length : 0 }}</span>
+              <span class="btn-text ms-2">{{ postagem.comentarios ? postagem.comentarios.length : 0 }}</span>
               <span class="tooltip">Comentar</span>
             </span>
+
+            <!-- Modal de Comentários -->
+            <div class="modal fade" id="modalComentariosUpload" tabindex="-1"
+              aria-labelledby="modalComentariosUploadLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalComentariosUploadLabel">Adicionar Comentário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body bg-dark">
+                    <!-- Exibindo o conteúdo da postagem -->
+                    <div class="post-header d-flex align-items-center mb-2">
+                      <img [src]="post.usuario?.fotoPerfil || '/assets/profile.jpg'" class="post-avatar me-2"
+                        (click)="irParaPerfil(post.usuario.idUsuario)" />
+                      <strong class="post-username">{{ post.usuario?.nomeUsuario }}</strong>
+                      <small class="ms-auto text-muted">{{ post.dataPostagem | date: 'dd/MM/yyyy HH:mm' }}</small>
+                    </div>
+                    <p class="post-comment-content mb-1">{{ modalConteudo }}</p>
+                    <img *ngIf="post.imagemUrl" [src]="post.imagemUrl" class="img-fluid rounded" />
+
+                    <!-- Caixa de texto para o comentário -->
+                    <textarea #comentarioInput class="form-control" rows="3" [(ngModel)]="comentarios[post.id].conteudo"
+                      placeholder="Digite seu comentário..."></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" (click)="comentar()">Publicar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
 
             <span class="btn-action btn-share">
               <i class="fas fa-share"></i>
@@ -85,8 +123,8 @@
           </div>
 
           <!-- Comentários -->
-          <div *ngIf="post.comentarios && post.comentarios.length" class="comments-section mt-3">
-            <div *ngFor="let comentario of post.comentarios | slice:0:3" class="comment card mb-2 p-2">
+          <div *ngIf="respostasPorPostagem[post.id]?.length" class="comments-section mt-3">
+            <div *ngFor="let comentario of respostasPorPostagem[post.id] | slice:0:3" class="comment card mb-2 p-2">
               <div class="d-flex align-items-start">
                 <img [src]="comentario.usuario?.fotoPerfil || '/assets/profile.jpg'" class="comment-avatar me-3" />
                 <div class="flex-grow-1">
@@ -118,9 +156,9 @@
             </div>
 
             <!-- Ver mais comentários -->
-            <div *ngIf="post.comentarios.length > 3" class="mt-3">
+            <div *ngIf="respostasPorPostagem[post.id].length > 3" class="mt-3">
               <button class="btn btn-link">
-                Ver mais comentários ({{ post.comentarios.length - 3 }} adicionais)
+                Ver mais comentários ({{ respostasPorPostagem[post.id].length - 3 }} adicionais)
               </button>
             </div>
           </div>
@@ -138,7 +176,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Comentários do Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                   <div *ngFor="let comentario of post.comentarios" class="comment card mb-2 p-2">
@@ -175,7 +213,7 @@
               </div>
             </div>
           </div>
-          
+
 
 
           <!-- Formulário para comentar -->
@@ -183,7 +221,7 @@
             <div class="d-flex align-items-start">
               <img [src]="usuario?.fotoPerfil || '/assets/profile.jpg'" class="comment-avatar me-3" />
               <div class="flex-grow-1">
-                <textarea class="form-control comment-input" rows="2" [(ngModel)]="comentarios[postagem.id].conteudo"
+                <textarea class="form-control comment-input" rows="2" [(ngModel)]="comentarios[post.id].conteudo"
                   placeholder="Escreva um comentário..."></textarea>
 
                 <!-- Barra de botões -->
@@ -204,7 +242,7 @@
                   <!-- input escondido para imagem -->
                   <input type="file" #fileInput accept="image/*" (change)="onImagemSelecionada($event)" hidden>
 
-                  <button class="btn btn-primary" (click)="comentar(post)">Comentar</button>
+                  <button class="btn btn-primary" (click)="comentar()">Comentar</button>
                 </div>
               </div>
             </div>
@@ -244,7 +282,4 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
       </div>
-
     </div>
-  </div>
-</div>

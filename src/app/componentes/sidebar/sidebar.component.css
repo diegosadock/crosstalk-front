@@ -53,6 +53,7 @@
   .fotoPerfil {
     width: 90px;
     height: 90px;
+    object-fit: cover;
     cursor: pointer;
     border: 2px solid #ff91b3
   }

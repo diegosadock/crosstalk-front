@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostagemService } from '../../servicos/postagem.service';
 import { Postagem } from '../../model/Postagem';
@@ -30,13 +30,17 @@ export class MainComponent implements OnInit {
   respostasPorPostagem: { [postagemId: number]: Comentario[] } = {};
   comentando: { [postagemId: number]: boolean } = {};
   public modalAberto: boolean = false;
+  modalConteudo: string = '';
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef<HTMLTextAreaElement>;
+  comentariosPostagem: { [key: string]: any } = {};
+  public postagemAtual: Postagem | null = null;
 
   constructor(
     private router: Router,
     private postagemService: PostagemService,
     private uploadService: UploadService,
     private comentarioService: ComentarioService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -113,11 +117,21 @@ export class MainComponent implements OnInit {
     const fusoHorarioBrasil = -3;
     agora.setHours(agora.getHours() + fusoHorarioBrasil);
 
+    // Simular mídia se não houver nenhuma
+    if (!this.postagem.midias || this.postagem.midias.length === 0) {
+      const midiaTeste: Midia = {
+        descricao: "Imagem de teste",
+        linkMidia: "/assets/media/imagem-teste.jpg", // caminho fictício
+        postagem: { id: 0 } // id será corrigido após o post ser criado
+      };
+      this.postagem.midias = [midiaTeste];
+    }
+
     const novaPostagem: Postagem = {
-      id: this.comentario.postagem.id,
+      id: this.postagem.id,
       conteudo: this.postagem.conteudo,
       dataPostagem: agora.toISOString(),
-      midias: this.postagem.midias || [],
+      midias: this.postagem.midias,
       usuario: this.usuario
     };
 
@@ -128,23 +142,22 @@ export class MainComponent implements OnInit {
           return;
         }
 
-        if (this.postagem.midias && this.postagem.midias.length > 0) {
-          this.postagem.midias.forEach((midia) => {
-            const novaMidia: Midia = {
-              descricao: midia.descricao,
-              linkMidia: midia.linkMidia,
-              postagem: { id: postCriado.id }
-            };
+        // Atualiza as mídias com o ID correto da postagem
+        this.postagem.midias.forEach((midia) => {
+          const novaMidia: Midia = {
+            descricao: midia.descricao,
+            linkMidia: midia.linkMidia,
+            postagem: { id: postCriado.id }
+          };
 
-            this.postagemService.criarMidia(novaMidia).subscribe({
-              next: () => console.log("Mídia salva com sucesso."),
-              error: (err) => {
-                console.error("Erro ao salvar mídia:", err);
-                alert("Erro ao salvar mídia. Tente novamente.");
-              }
-            });
+          this.postagemService.criarMidia(novaMidia).subscribe({
+            next: () => console.log("Mídia simulada salva com sucesso."),
+            error: (err) => {
+              console.error("Erro ao salvar mídia:", err);
+              alert("Erro ao salvar mídia. Tente novamente.");
+            }
           });
-        }
+        });
 
         this.postagens.unshift(postCriado);
         this.postagem = {} as Postagem;
@@ -211,35 +224,36 @@ export class MainComponent implements OnInit {
     }
   }
 
-  public comentar(postagem: Postagem): void {
-    // Verifica se 'postagem.id' é válido antes de tentar acessar 'comentarios[postagem.id]'
-    if (postagem.id === undefined) {
-      console.error("ID da postagem é indefinido");
+  public comentar(): void {
+    if (!this.postagemAtual) {
+      console.error("Nenhuma postagem selecionada.");
       return;
     }
   
-    // Acessa o comentário de forma segura, sem acessar undefined
-    const conteudo = this.comentarios[postagem.id]?.conteudo?.trim();  // Acesso seguro ao 'conteudo'
+    const postagemId = this.postagemAtual.id;
+    const conteudo = this.comentarios[postagemId]?.conteudo?.trim();
+
     if (!conteudo) {
       console.error("Comentário vazio ou inválido");
       return;
     }
   
     const novoComentario: Comentario = {
-      conteudo: conteudo,
+      conteudo,
       usuario: this.usuario,
-      postagem: postagem,  // Associa o comentário à postagem original
+      postagem: this.postagemAtual,
       dataComentario: new Date().toISOString()
     };
   
-    // Envia o comentário para o serviço
     this.comentarioService.criarNovo(novoComentario).subscribe({
       next: () => {
-        // Limpa o 'comentarios' para essa postagem após o comentário ser criado
-        if (this.comentarios[postagem.id]) {
-          this.comentarios[postagem.id] = {} as Comentario;
-        }
-        this.carregarRespostas(postagem.id);  // Atualiza a lista de respostas (comentários)
+        this.comentarios[postagemId] = {
+          conteudo: '',
+          usuario: this.usuario,
+          postagem: this.postagemAtual!,
+          dataComentario: ''
+        };
+        this.carregarRespostas(postagemId);
       },
       error: (err) => {
         console.error("Erro ao comentar:", err);
@@ -247,7 +261,10 @@ export class MainComponent implements OnInit {
       }
     });
   }
+  
+  
 
+  
   isComentando(post: Postagem): boolean {
     return !!this.comentando[post.id];
   }
@@ -271,6 +288,34 @@ export class MainComponent implements OnInit {
     this.modalAberto = true;
   }
 
-  public abrirEmojiPicker() {}
-  public selecionarGif() {}
+  public abrirEmojiPicker() { }
+  public selecionarGif() { }
+
+  public preencherModal(post: Postagem): void {
+    this.modalConteudo = post.conteudo;
+    this.postagemAtual = post; // <<< salva o post inteiro
+  
+    if (!this.comentarios[post.id]) {
+      this.comentarios[post.id] = {
+        conteudo: '',
+        usuario: this.usuario,
+        postagem: post,
+        dataComentario: ''
+      };
+    }
+  
+    const modal = document.getElementById('modalComentariosUpload');
+    if (modal) {
+      const onShown = () => {
+        setTimeout(() => this.comentarioInput?.nativeElement.focus(), 50);
+        modal.removeEventListener('shown.bs.modal', onShown);
+      };
+      modal.addEventListener('shown.bs.modal', onShown);
+    }
+  }
+  
+  
+  
+
+
 }
